@@ -1,0 +1,110 @@
+[
+    {
+        "id": "p_8",
+        "name": "I have diabetes",
+        "choice_id": [
+            {
+                "id": "present",
+                "name": "Yes"
+            },
+            {
+                "id": "absent",
+                "name": "No"
+            },
+            {
+                "id": "unknown",
+                "name": "Don't know"
+            }
+        ]
+    },
+    {
+        "id": "p_7",
+        "name": "I'm overweight or obese",
+        "choice_id": [
+            {
+                "id": "present",
+                "name": "Yes"
+            },
+            {
+                "id": "absent",
+                "name": "No"
+            },
+            {
+                "id": "unknown",
+                "name": "Don't know"
+            }
+        ]
+    },
+    {
+        "id": "p_9",
+        "name": "I have hypertension",
+        "choice_id": [
+            {
+                "id": "present",
+                "name": "Yes"
+            },
+            {
+                "id": "absent",
+                "name": "No"
+            },
+            {
+                "id": "unknown",
+                "name": "Don't know"
+            }
+        ]
+    },
+    {
+        "id": "p_28",
+        "name": "I smoke cigarettes",
+        "choice_id": [
+            {
+                "id": "present",
+                "name": "Yes"
+            },
+            {
+                "id": "absent",
+                "name": "No"
+            },
+            {
+                "id": "unknown",
+                "name": "Don't know"
+            }
+        ]
+    },
+    {
+        "id": "p_264",
+        "name": "I've recently suffered an injury",
+        "choice_id": [
+            {
+                "id": "present",
+                "name": "Yes"
+            },
+            {
+                "id": "absent",
+                "name": "No"
+            },
+            {
+                "id": "unknown",
+                "name": "Don't know"
+            }
+        ]
+    },
+    {
+        "id": "p_10",
+        "name": "I have high cholesterol",
+        "choice_id": [
+            {
+                "id": "present",
+                "name": "Yes"
+            },
+            {
+                "id": "absent",
+                "name": "No"
+            },
+            {
+                "id": "unknown",
+                "name": "Don't know"
+            }
+        ]
+    }
+]

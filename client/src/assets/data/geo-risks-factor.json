@@ -1,0 +1,42 @@
+[
+    {
+        "id": "p_236",
+        "name": "Asia, excluding Middle East, Russia, Mongolia and Kazakhstan"
+    },
+    {
+        "id": "p_19",
+        "name": "Australia and Oceania"
+    },
+    {
+        "id": "p_17",
+        "name": "Central Africa"
+    },
+    {
+        "id": "p_14",
+        "name": "Central or South America"
+    },
+    {
+        "id": "p_15",
+        "name": "Europe"
+    },
+    {
+        "id": "p_21",
+        "name": "Middle East"
+    },
+    {
+        "id": "p_16",
+        "name": "Northern Africa"
+    },
+    {
+        "id": "p_20",
+        "name": "Russia, Kazakhstan, or Mongolia"
+    },
+    {
+        "id": "p_18",
+        "name": "Southern Africa"
+    },
+    {
+        "id": "p_13",
+        "name": "The United States or Canada"
+    }
+]
