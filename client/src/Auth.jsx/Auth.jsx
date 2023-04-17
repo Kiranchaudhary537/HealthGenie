@@ -14,7 +14,7 @@ export const Login = () => {
   };
   const handleonclick = () => {
     window
-      .open("http://localhost:5000/auth/google/callback", "_self")
+      .open("http://localhost:5000/api/auth/google/callback", "_self")
       .then(() => {
         handleToggle();
       });

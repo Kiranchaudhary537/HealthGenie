@@ -62,20 +62,20 @@ const authenticateJWT = (req, res, next) => {
   }
 };
 
-app.get("/", (req, res) => {
+app.get("/api/", (req, res) => {
   res.json("server working");
 });
 
-app.use("/auth", authRouter);
-app.get("/checkLogin", authenticateJWT, (req, res) => {
+app.use("/api/auth", authRouter);
+app.get("/api/checkLogin", authenticateJWT, (req, res) => {
   res.json({ loggedIn: true });
 });
 
-app.post("/basicquery", authenticateJWT, askToOpenAi);
-app.post("/symptomchecker", authenticateJWT, checkSymptoms);
+app.post("/api/basicquery", authenticateJWT, askToOpenAi);
+app.post("/api/symptomchecker", authenticateJWT, checkSymptoms);
 
 // app.post("/imagedetection",imageDetection);
-app.use("/infermedica", authenticateJWT, infermedicaRouter);
+app.use("/api/infermedica", authenticateJWT, infermedicaRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
