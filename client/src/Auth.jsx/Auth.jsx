@@ -26,7 +26,7 @@ export const Login = () => {
       const { data } = await AXIOS.get("/auth/login/success", {
         withCredentials: true,
       });
-      console.log(data);
+  
       setUser(data.user);
       localStorage.setItem("accessToken", data.accessToken);
       navigate("/", { replace: true });

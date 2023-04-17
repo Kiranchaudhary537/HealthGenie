@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import useSymtomFormContext from "./../../hooks/useSymtomChecker";
 
 import GeoRisk from "./GeoRisk";
@@ -7,11 +6,11 @@ export default function BasicInfo() {
   const { formData, formErrors, handleChange } = useSymtomFormContext();
 
   return (
-    <div class="w-full  p-6 border border-gray-300 sm:rounded-md ">
-      <div class="mb-4 flex flex-row">
-        <p className="block text-gray-900  font-medium  w-32">
-          Age <snap className="p-2">{formData.age}</snap>
-        </p>
+    <div className="w-full  p-6 border border-gray-300 sm:rounded-md ">
+      <div className="mb-4 flex flex-row">
+        <div className="block text-gray-900  font-medium  w-32">
+          Age <p className="p-2">{formData.age}</p>
+        </div>
         <div className="flex w-full flex-col items-center">
           <div className="relative w-full left-0" style={{ top: "-1rem" }}>
             <div className="h-2 text-xs flex rounded ">

@@ -21,12 +21,12 @@ function App() {
               <Route path="/" element={<Layout />}>
                 <Route index element={<BasicQuery />} />
                 <Route index path="/basicquery" element={<BasicQuery />} />
-                <Route exact path="/mentalhealth" element={<MentalHealth />} />
+                {/* <Route exact path="/mentalhealth" element={<MentalHealth />} />
                 <Route
                   exact
                   path="/diseaserecongination"
                   element={<DiseaseRecognition />}
-                />
+                /> */}
                 <Route
                   exact
                   path="/symptomchecker"

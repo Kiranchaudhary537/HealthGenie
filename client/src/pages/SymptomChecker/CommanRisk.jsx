@@ -145,7 +145,8 @@ const responseForMale = [
 ];
 
 function SurveyQuestion({
-  responses,
+  commanRisk,
+  key,
   question,
   selectedChoice,
   setSelectedChoice,
@@ -160,23 +161,23 @@ function SurveyQuestion({
     const element = {
       target: {
         name: "CommanRisk",
-        value: responses,
+        value: commanRisk,
       },
     };
     handleChange(element);
-  }, [responses]);
+  }, [commanRisk]);
 
   return (
     <div
-      key={question.id}
-      class="mb-4 flex flex-row border-b justify-between mx-4 m-1 "
+      key={key}
+      className="mb-4 flex flex-row border-b justify-between mx-4 m-1 "
     >
-      <label class="block text-gray-700 font-medium mb-2">
+      <label className="block text-gray-700 font-medium mb-2">
         {question.name}
       </label>
-      <div class="flex flex-wrap   mx-2">
+      <div className="flex flex-wrap   mx-2">
         {question.choices.map((choice) => (
-          <div class="px-2 w-1/3">
+          <div className="px-2 w-1/3">
             <label key={choice.id} className="block  text-gray-700 font-medium">
               <input
                 type="radio"
@@ -198,7 +199,7 @@ function SurveyQuestion({
 function CommanRisk() {
   const { formData, formErrors } = useSymtomChecker();
 
-  const [responses, setResponses] = useState(
+  const [commanRisk, setCommanRisk] = useState(
     formData.CommanRisk.length > 0
       ? [...formData.CommanRisk]
       : formData.gender == "female"
@@ -207,12 +208,9 @@ function CommanRisk() {
   );
 
   const handleResponseChange = (id, name, value) => {
-    
-    setResponses(
-      responses.map((response) =>
-        response.id === id
-          ? { ...response, choice_id: value }
-          : response
+    setCommanRisk(
+      commanRisk.map((response) =>
+        response.id === id ? { ...response, choice_id: value } : response
       )
     );
   };
@@ -225,10 +223,10 @@ function CommanRisk() {
   useEffect(() => {
     if (
       formData.gender === "female" &&
-      !responses.some((response) => response.id === "p_11")
+      !commanRisk.some((response) => response.id === "p_11")
     ) {
-      setResponses([
-        ...responses,
+      setCommanRisk([
+        ...commanRisk,
         {
           id: "p_11",
           choice_id: "unknown",
@@ -238,9 +236,6 @@ function CommanRisk() {
     }
   }, [questionArrayToUse]);
 
-  useEffect(() => {
-    console.log(responses);
-  },[responses])
   return (
     <div
       className={`border rounded-lg  m-4 p-4 w-full ${
@@ -252,15 +247,17 @@ function CommanRisk() {
       </h4>
       <div className="p-2 mt-4">
         {questionArrayToUse.map((question, i) => (
-          <SurveyQuestion
-            responses={responses}
-            key={question.id}
-            question={question}
-            selectedChoice={responses[i]?.choice_id}
-            setSelectedChoice={(value) =>
-              handleResponseChange(question.id, question.name, value)
-            }
-          />
+          <div key={i}>
+            <SurveyQuestion
+              commanRisk={commanRisk}
+              key={i}
+              question={question}
+              selectedChoice={commanRisk[i]?.choice_id}
+              setSelectedChoice={(value) =>
+                handleResponseChange(question.id, question.name, value)
+              }
+            />
+          </div>
         ))}
       </div>
       <div>

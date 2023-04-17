@@ -20,9 +20,11 @@ function SingleChoiceQuestion({ question }) {
     };
     handleChange(element);
   }, [selectedValue]);
+
   useEffect(() => {
     setSelectedValue({ choice_id: "", id: "" });
   }, [items]);
+  
   const options = items.map((item, index) => (
     <div
       key={item.id}

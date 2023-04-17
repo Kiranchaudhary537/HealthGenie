@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useSymtomChecker from "../../hooks/useSymtomChecker";
 function Response({ response }) {
-  const { page } = useSymtomChecker();
-
+  const { page, resetForm } = useSymtomChecker();
+  useEffect(() => {
+    resetForm();
+  }, []);
   return (
     <div>
-      {/* Infermedic Part */}
       <div>
         <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
           <div className="p-8 ">

@@ -1,15 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import useSymtomChecker from "../../hooks/useSymtomChecker";
 import AXIOS from "../../utils/AXIOS";
-import axios from "axios";
 
 function SuggestSymptoms() {
   const [options, setOptions] = useState([]);
-  const { formData, requestValue, formErrors, handleChange } =
-    useSymtomChecker();
-  const [selectedOption, setSelectedOption] = useState(
-    formData.Suggestion.length > 0 ? [...formData.Suggestion] : []
-  );
+  const { requestValue, formErrors, handleChange } = useSymtomChecker();
+  const [selectedOption, setSelectedOption] = useState([]);
 
   const handleOptionSelect = (event) => {
     const { id, name } = event;
@@ -30,39 +26,19 @@ function SuggestSymptoms() {
       setSelectedOption(selectedOption.concat(newselectedOption));
     }
   };
-  const infermedicaEndpoint = "https://api.infermedica.com/v3";
-  const infermedicaAppId = "1ce0a89b";
-  const infermedicaAppKey = "b1c514e06870174c15fe79dbc20c67cf";
-  const infermedicaSuggestEndpoint = `${infermedicaEndpoint}/suggest`;
-  
-  const filteredSelectedOptions = requestValue.evidence.map((obj) => {
-    const { name, ...rest } = obj;
-    return rest;
-  });
-
-  const filteredEvidence = filteredSelectedOptions.filter(
-    (obj) => obj.id !== "" && obj.choice_id !== ""
-  );
-
-  const updatedRequestValue = { ...requestValue, evidence: filteredEvidence };
 
   useEffect(() => {
-    axios
-      .post(infermedicaSuggestEndpoint, JSON.stringify(updatedRequestValue), {
-        headers: {
-          "App-Id": infermedicaAppId,
-          "App-Key": infermedicaAppKey,
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        setOptions(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-        setOptions([]);
-      });
-  }, []);
+    const fetchData = async () => {
+      await AXIOS.post("infermedica/suggest", requestValue)
+        .then((response) => {
+          setOptions(response.data);
+        })
+        .catch((error) => {
+          setOptions([]);
+        });
+    };
+    fetchData();
+  }, [requestValue]);
 
   useEffect(() => {
     const element = {

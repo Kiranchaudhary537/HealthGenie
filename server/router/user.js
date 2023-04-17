@@ -12,7 +12,7 @@ const userAll = async (req, res) => {
   //       res.status(200).send({ message: e });
   //     })
   //     .catch(res.status(400).send("Error"));
-  //   console.log("userall");
+
   res.cookie("jwt", "token", { httpOnly: false });
   res.status(200).send("ok");
 };

@@ -12,7 +12,6 @@ function SingleAnswerQuestion({ question }) {
   };
 
   useEffect(() => {
-    console.log(answer);
     const element = {
       target: {
         name: "Diagnosis",
@@ -26,6 +25,8 @@ function SingleAnswerQuestion({ question }) {
     setAnswer({ choice_id: "", id: items[0].id });
 
   }, [items]);
+
+  
   return (
     <div className="my-4 px-4 py-2 rounded-lg">
       {items.length > 1 && <h2 className="font-bold text-lg mb-2">{text}</h2>}

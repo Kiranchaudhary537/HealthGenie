@@ -3,9 +3,10 @@ import AXIOS from "../utils/AXIOS";
 
 export default function BasicQuery() {
   const [answer, setAnswer] = useState(null);
+
   const [formData, setFormData] = useState({
     question: "",
-    age: "",
+    age: 20,
     gender: "",
   });
   const [formErrors, setFormErrors] = useState({
@@ -58,40 +59,73 @@ export default function BasicQuery() {
           setAnswer(res.data);
         })
         .catch((e) => {
-          console.log(e);
+          setAnswer({
+            content: "There is some error";
+          })
+          // console.log(e);
         });
       return;
     }
-    console.log(formData);
+    // console.log(formData);
   };
 
+  const handleQuestion = () => {
+    setFormData({
+      question: "",
+      age: "",
+      gender: "",
+    });
+    setAnswer(null);
+  };
   return (
     <>
-      <div class="w-full  mx-auto max-w-2xl max-w-lg  border border border-gray-300 p-8 rounded-md">
+      <div className="w-full  mx-auto max-w-2xl max-w-lg  border border border-gray-300 p-8 rounded-md">
         {answer != null ? (
-          <div className="p-8 ">
-            <p className="text-lg mb-4 ">Your Question is </p>
-            <p className="text-2lg mb-4 ">{formData.question}</p>
-            <p className="text-lg mt-4 ">{answer.content}</p>
+          <div className="flex-1 ">
+            <div className={`p-4`}>
+              <div className="border rounded-lg">
+                <div className={"p-2 bg-gray-200 text-gray-800"}>
+                  {formData.question}
+                </div>
+                <div className={"p-2 pt-4   "}>{answer?.content}</div>
+              </div>
+              <button
+                className="mt-4 p-2 flex justify-center bg-gray-400 hover:bg-gray-500 text-white font-semibold rounded-lg shadow-md transition-colors duration-300"
+                onClick={handleQuestion}
+              >
+                Ask question again
+              </button>
+            </div>
           </div>
         ) : (
           <>
-            <h1 class="text-2xl text-center font-medium mb-2">Basic Query</h1>
-            <form class="flex flex-col mt-4" onSubmit={handleSubmit}>
+            <h1 className="text-2xl text-center font-medium mb-2">
+              Ask your question here
+            </h1>
+            {formData.question.length >= 200 && (
+              <div className="text-red-500 text-sm mt-1">
+                Your question must be less than 300 characters.
+              </div>
+            )}
+            <form className="flex flex-col mt-4" onSubmit={handleSubmit}>
               <textarea
                 className="w-full border px-4 py-2 rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 style={{ resize: "none" }}
                 name="question"
                 required
+                maxLength={200}
                 onChange={handleChange}
                 placeholder="Write your symptom or condition in detail, e.g. I had a headache and vomited several times, and I had a sore throat..."
                 rows={6}
               />
+              <div className="flex justify-end text-sm">
+                {formData.question.length}/200
+              </div>
               <div className="flex flex-col mb-4">
-                <div class="my-4 flex flex-row">
-                  <p className="block text-gray-900  font-medium  w-32">
-                    Age <snap className="p-2">{formData.age}</snap>
-                  </p>
+                <div className="my-4 flex flex-row">
+                  <div className="block text-gray-900  font-medium  w-32 ">
+                    Age {" " + formData.age}
+                  </div>
                   <div className="flex w-full flex-col items-center">
                     <div
                       className="relative w-full left-0"
@@ -169,7 +203,7 @@ export default function BasicQuery() {
                   )}
                 </div>
               </div>
-              <button class="self-center mt-4 px-4 py-2 font-bold text-white bg-cyan-950  rounded hover:bg-cyan-700 focus:outline-none focus:shadow-outline">
+              <button className="self-center mt-4 px-4 py-2 font-bold text-white bg-cyan-950  rounded hover:bg-cyan-700 focus:outline-none focus:shadow-outline">
                 Submit
               </button>
             </form>

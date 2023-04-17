@@ -19,6 +19,7 @@ const FormInputs = () => {
     4: <Diagnosis />,
     5: <Response response={finalResponse} />,
   };
+
   const evidenceToAdd = Array.isArray(formData.Diagnosis)
     ? formData.Diagnosis.length > 0
       ? [...formData.Diagnosis]
@@ -45,7 +46,6 @@ const FormInputs = () => {
         extras: requestValue.extras,
       });
     }
-    console.log(requestValue);
   }, [page]);
 
   const content = <div className="form-inputs flex-col">{display[page]}</div>;

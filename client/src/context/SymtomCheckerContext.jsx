@@ -25,6 +25,7 @@ export const SymptomCheckerProvider = ({ children }) => {
     Suggestion: [],
     Diagnosis: [],
   });
+
   const [formErrors, setFormErrors] = useState({
     age: "",
     gender: "",
@@ -34,19 +35,7 @@ export const SymptomCheckerProvider = ({ children }) => {
     Suggestion: "",
     Diagnosis: "",
   });
-  const generateInterviewId = () => {
-    const uuidv4 = function () {
-      return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
-        (
-          c ^
-          (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
-        ).toString(16)
-      ); // eslint-disable-line
-    };
 
-    const id = uuidv4();
-    return id;
-  };
   const [requestValue, setRequestValue] = useState({
     sex: formData.gender,
     age: {
@@ -63,6 +52,7 @@ export const SymptomCheckerProvider = ({ children }) => {
       include_extended_conditions: true,
     },
   });
+
   const validateField = (name, value) => {
     let error = "";
     switch (name) {
@@ -110,17 +100,7 @@ export const SymptomCheckerProvider = ({ children }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     const error = validateField(name, value);
-    if (
-      name == "ResidenceOrTravel" ||
-      name == "CommanRisk" ||
-      name == "Suggestion" ||
-      name == "Diagnosis" ||
-      name == "Symptoms"
-    ) {
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
-    } else {
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
-    }
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
     setFormErrors((prevErrors) => ({ ...prevErrors, [name]: error }));
   };
 
@@ -135,10 +115,14 @@ export const SymptomCheckerProvider = ({ children }) => {
       alert("Please fill in all required fields correctly");
       return;
     }
-    console.log(formData);
+   
   };
 
-  const canSubmit = (page == 5 && shouldStop);
+  const resetForm = () => {
+    window.location.reload();
+  };
+
+  const canSubmit = page == 5 && shouldStop;
 
   const disablePrev = page === 0;
 
@@ -152,6 +136,9 @@ export const SymptomCheckerProvider = ({ children }) => {
 
   const submitHide = !shouldStop;
 
+  // useEffect(() => {
+    // console.log(requestValue);
+  // }, [requestValue]);
   return (
     <SymptomCheckerContext.Provider
       value={{
@@ -161,6 +148,7 @@ export const SymptomCheckerProvider = ({ children }) => {
         setFinalResponse,
         setShouldStop,
         setRequestValue,
+        resetForm,
         page,
         setPage,
         formData,

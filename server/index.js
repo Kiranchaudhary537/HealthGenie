@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { askToOpenAi } from "./utils/openai.js";
-import imageDetection from "./utils/imageDetection.js";
+
 import { checkSymptoms } from "./controller/checkSymptoms.js";
 import cors from "cors";
 import passport from "passport";
@@ -16,7 +16,7 @@ import jwt from "jsonwebtoken";
 import "./config/passport.js";
 import db from "./config/db.js";
 
-// import infermedicaRouter from "./router/infermedicaRouter.js";
+import infermedicaRouter from "./router/infermedicaRouter.js";
 db();
 
 const app = express();
@@ -32,7 +32,7 @@ app.use(
 
 app.use(
   cors({
-    origin:  process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL,
     credentials: true,
   })
 );
@@ -49,7 +49,7 @@ const authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
     const token = authHeader.split(" ")[1];
-    console.log(token);
+  
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
       if (err) {
         return res.sendStatus(403);
@@ -62,7 +62,6 @@ const authenticateJWT = (req, res, next) => {
   }
 };
 
-
 app.get("/", (req, res) => {
   res.json("server working");
 });
@@ -72,11 +71,11 @@ app.get("/checkLogin", authenticateJWT, (req, res) => {
   res.json({ loggedIn: true });
 });
 
-app.post("/basicquery",authenticateJWT, askToOpenAi);
+app.post("/basicquery", authenticateJWT, askToOpenAi);
 app.post("/symptomchecker", authenticateJWT, checkSymptoms);
 
 // app.post("/imagedetection",imageDetection);
-// app.use("/infermedica", infermedicaRouter);
+app.use("/infermedica", authenticateJWT, infermedicaRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

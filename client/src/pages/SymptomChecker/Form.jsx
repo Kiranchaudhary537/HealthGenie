@@ -6,6 +6,7 @@ const Form = () => {
     title,
     page,
     prevHide,
+    resetForm,
     nextHide,
     submitHide,
     canSubmit,
@@ -19,15 +20,16 @@ const Form = () => {
 
   const content = (
     <div className="w-full  mx-auto max-w-2xl max-w-lg">
-      <div class="relative pt-1">
+      <div className="relative pt-1">
         <input
           type="range"
           min={1}
           max={Object.keys(title).length}
           value={page + 1}
-          class="w-full h-2 appearance-none rounded-full bg-gray-300"
+          readOnly={true}
+          className="w-full h-2 appearance-none rounded-full bg-gray-300"
         />
-        <div class="flex justify-between text-xs font-semibold text-gray-600">
+        <div className="flex justify-between text-xs font-semibold text-gray-600">
           <span>1</span>
           <span>{Object.keys(title).length}</span>
         </div>
@@ -84,6 +86,17 @@ const Form = () => {
           <></>
         )}
       </form>
+      <div className="mt-4">
+        <button
+          type="button"
+          className="mt-4 px-4 py-2 font-bold bg-gray-300 hover:bg-gray-400 text-gray-800  rounded  focus:outline-none focus:shadow-outline"
+          onClick={() => {
+            resetForm();
+          }}
+        >
+          Reset Form
+        </button>
+      </div>
     </div>
   );
 

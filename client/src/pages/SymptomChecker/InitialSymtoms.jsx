@@ -9,7 +9,6 @@ import useSymtomChecker from "../../hooks/useSymtomChecker";
 const InitialSymptoms = () => {
   const { formData, formErrors, handleChange } = useSymtomChecker();
 
-  const [str, setString] = useState("");
   const [bodyPosition, setBodyPosition] = useState(true);
   const [nameOfPart, setNameOfPart] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -22,6 +21,7 @@ const InitialSymptoms = () => {
 
   const popoverRef = useRef(null);
 
+   //handle select values
   const handleSelect = (value) => {
     setSelectedSymptoms((prevSelectedSymptoms) => {
       const itemIndex = prevSelectedSymptoms.findIndex(
@@ -44,6 +44,7 @@ const InitialSymptoms = () => {
     });
   };
 
+ //handle de-selecting of values 
   const handleDeselect = (value) => {
     setSelectedSymptoms(selectedSymptoms.filter((item) => item.id != value.id));
   };
@@ -58,6 +59,9 @@ const InitialSymptoms = () => {
     handleChange(element);
   }, [selectedSymptoms]);
 
+
+  // handle pop over this function will trigger if some click outside of popover and popover will be close.
+
   const handleClickOutside = (event) => {
     if (popoverRef.current && !popoverRef.current.contains(event.target)) {
       setIsOpen(false);
@@ -71,13 +75,6 @@ const InitialSymptoms = () => {
 
   const handlePopoverClose = () => {
     setIsOpen(false);
-  };
-  const handleChangeForInput = (e) => {
-    if (str.length >= 300) {
-      alert("Input size must less than 300");
-    } else {
-      setString(e.target.value);
-    }
   };
 
   return (
@@ -168,23 +165,8 @@ const InitialSymptoms = () => {
         </div>
         <div className="w-1/2  p-3   flex flex-col justify-between">
           <div>
-            {/* <p className="m-1">Character limit: {str.length} / 300 </p>
-            <textarea
-              className="w-full px-4 py-2 rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-              onChange={(e) => {
-                handleChangeForInput(e);
-              }}
-              style={{ resize: "none" }}
-              placeholder="Write your symptom or condition in detail, e.g. I had a headache and vomited several times, and I had a sore throat..."
-              rows={6} // specify the number of rows
-            />
-            <div class="flex items-center">
-              <div class="flex-1 border-t border-2 border-dotted"></div>
-              <div class="px-4">OR</div>
-              <div class="flex-1 border-t   border-2 border-dotted"></div>
-            </div> */}
-            <h1 class="text-2xl font-bold mb-2">Your Symptoms</h1>
-            <p class="text-gray-500 mb-4">Add as many symptoms as you can</p>
+            <h1 className="text-2xl font-bold mb-2">Your Symptoms</h1>
+            <p className="text-gray-500 mb-4">Add as many symptoms as you can</p>
             <div className="flex flex-row flex-wrap">
               {selectedSymptoms.map((e) => (
                 <div
@@ -192,7 +174,7 @@ const InitialSymptoms = () => {
                   className="bg-gray-200 rounded-full py-1 px-3 m-2 flex items-center overflow-hidden "
                 >
                   <span
-                    class="mr-2 whitespace-nowrap overflow-hidden overflow-ellipsis"
+                    className="mr-2 whitespace-nowrap overflow-hidden overflow-ellipsis"
                     title={`${e.name}`}
                   >
                     {e.name?.split(" ").slice(0, 3).join(" ")}

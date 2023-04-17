@@ -15,7 +15,7 @@ passport.use(
       try {
         const user = await User.findById(profile.id);
         if (user) {
-          console.log(user);
+      
           return done(null, user);
         } else {
           const newUser = await User.create({
@@ -24,7 +24,7 @@ passport.use(
             profilePic: profile.photos[0].value,
             _id: profile.id,
           });
-          console.log(newUser);
+        
           return done(null, newUser);
         }
       } catch (error) {

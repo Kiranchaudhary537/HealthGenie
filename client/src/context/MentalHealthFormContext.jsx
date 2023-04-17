@@ -4,6 +4,7 @@ const MentalHealthFormContext = createContext({});
 
 export const MentalHealthFormProvider = ({ children }) => {
   const [page, setPage] = useState(0);
+  
   const title = {
     0: "Basic Information",
     1: "Questions Part-1",
@@ -105,7 +106,7 @@ export const MentalHealthFormProvider = ({ children }) => {
       alert("Please fill in all required fields correctly");
       return;
     }
-    console.log(formData);
+    // console.log(formData);
   };
 
   const canSubmit =

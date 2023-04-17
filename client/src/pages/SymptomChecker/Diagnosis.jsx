@@ -1,14 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import useSymtomChecker from "../../hooks/useSymtomChecker";
 import AXIOS from "../../utils/AXIOS";
-
 import MultipleChoiceGroupQuestion from "./MultipleChoiceGroupQuestion";
 import SingleChoiceQuestion from "./SingleChoiceQuestion";
 import SingleAnswerQuestion from "./SingleAnswerQuestion";
-import data from "./../../assets/data/tempdata.json";
-import Response from "./Response";
-import { DiagnosisAPI } from "../../api/infermedicalApi";
-import axios from "axios";
+
 function Diagnosis() {
   const [response, setResponse] = useState({});
   const { question, should_stop } = response || {};
@@ -19,55 +15,22 @@ function Diagnosis() {
     setRequestValue,
     setShouldStop,
   } = useSymtomChecker();
-  const infermedicaEndpoint = "https://api.infermedica.com/v3";
-  const infermedicaAppId = "1ce0a89b";
-  const infermedicaAppKey = "b1c514e06870174c15fe79dbc20c67cf";
-  const infermedicaSuggestEndpoint = `${infermedicaEndpoint}/suggest`;
-  const infermedicaDiagnosisAPIEndpoint = `${infermedicaEndpoint}/diagnosis`;
-  const filteredSelectedOptions = requestValue.evidence.map((obj) => {
-    const { name, ...rest } = obj;
-    return rest;
-  });
-
-  const filteredEvidence = filteredSelectedOptions.filter(
-    (obj) => obj.id !== "" && obj.choice_id !== ""
-  );
-
-  const updatedRequestValue = {
-    ...requestValue,
-    evidence: filteredEvidence,
-  };
 
   useEffect(() => {
-    async function fetchQuestion() {
-      axios
-        .post(
-          infermedicaDiagnosisAPIEndpoint,
-          JSON.stringify(updatedRequestValue),
-          {
-            headers: {
-              "App-Id": infermedicaAppId,
-              "App-Key": infermedicaAppKey,
-              "Content-Type": "application/json",
-            },
-          }
-        )
+    const fetchData = async () => {
+      await AXIOS.post("infermedica/diagnosis", requestValue)
         .then((response) => {
           setResponse(response.data);
         })
         .catch((error) => {
-          console.error(error);
           setResponse([]);
         });
-    }
-
-    fetchQuestion();
+    };
+    fetchData();
   }, [requestValue]);
 
   const renderQuestion = (question) => {
-    const { type } = question;
-
-    switch (type) {
+    switch (question.type) {
       case "group_single":
       case "scale":
         return <SingleChoiceQuestion question={question} />;
@@ -101,9 +64,6 @@ function Diagnosis() {
     });
   };
 
-  useEffect(() => {
-    console.log(requestValue);
-  }, [requestValue]);
   if (should_stop) {
     setShouldStop(true);
     setFinalResponse(response);

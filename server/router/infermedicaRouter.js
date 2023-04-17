@@ -2,71 +2,86 @@ import express from "express";
 import dotenv from "dotenv";
 import axios from "axios";
 dotenv.config();
-import fetch from "node-fetch";
 
 const infermedicaRouter = express.Router();
 
-// const infermedicaApi = {
-//   appId: process.env.INFERMEDICA_APP_ID,
-//   appKey: process.env.INFERMEDICA_APP_KEY,
-//   apiUrl: "https://api.infermedica.com/v3/",
-//   apiModel: "infermedica-en",
-// };
-const infermedicaApi = {
-  apiUrl: "https://api.infermedica.com/v3/",
-  appId: process.env.INFERMEDICA_APP_ID,
-  appKey: process.env.INFERMEDICA_APP_KEY,
-};
-// const getHeaders = async (interviewId) => {
-//   const headers = new Headers();
-//   // const Headers = (await import('node-fetch')).Headers
-//   // headers = new Headers(headers)
-//   headers.append("App-Id", infermedicaApi.appId);
-//   headers.append("App-Key", infermedicaApi.appKey);
-//   headers.append("Model", infermedicaApi.apiModel);
-//   headers.append("Content-Type", "application/json");
-//   headers.append("Interview-Id", interviewId);
-//   return headers;
-// };
+const infermedicaEndpoint = "https://api.infermedica.com/v3";
+
+const infermedicaSuggestEndpoint = `${infermedicaEndpoint}/suggest`;
+const infermedicaDiagnosisAPIEndpoint = `${infermedicaEndpoint}/diagnosis`;
 
 infermedicaRouter.post("/diagnosis", async (req, res) => {
-  const url = `${infermedicaApi.apiUrl}diagnosis`;
-  const data = JSON.stringify(req.body);
-  const interviewId = req.body.interview_id;
-  res.status(200).json("ok");
-  // try {
-  //   const response = await fetch(url, {
-  //     method: "POST",
-  //     headers: getHeaders(interviewId),
-  //     body: data,
-  //   });
-  //   const json = await response.json();
-  //   res.json(json);
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).send("Internal server error");
-  // }
+  const requestValue = req.body;
+  const filteredSelectedOptions = requestValue.evidence.map((obj) => {
+    const { name, ...rest } = obj;
+    return rest;
+  });
+
+  const filteredEvidence = filteredSelectedOptions.filter(
+    (obj) => obj.id !== "" && obj.choice_id !== ""
+  );
+
+  const updatedRequestValue = {
+    ...requestValue,
+    evidence: filteredEvidence,
+  };
+
+  try {
+    const response = await axios.post(
+      infermedicaDiagnosisAPIEndpoint,
+      JSON.stringify(updatedRequestValue),
+      {
+        headers: {
+          "App-Id": process.env.INFERMEDICA_APP_ID,
+          "App-Key": process.env.INFERMEDICA_APP_KEY,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
 
-infermedicaRouter.post("/suggest", (req, res) => {
-  const url = `${infermedicaApi.apiUrl}suggest`;
-  const data = JSON.stringify(req.body);
+function hasInitialSource(arr) {
+  return arr.some((obj) => obj.source === "initial");
+}
 
-  axios
-    .post(url, data, {
-      headers: {
-        "App-Id": infermedicaApi.appId,
-        "App-Key": infermedicaApi.appKey,
-        "Content-Type": "application/json",
-      },
-    })
-    .then((response) => {
-      res.json(response.data);
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).json({ error: "Internal server error" });
-    });
+infermedicaRouter.post("/suggest", async (req, res) => {
+  const requestValue = req.body;
+  const filteredSelectedOptions = requestValue.evidence.map((obj) => {
+    const { name, ...rest } = obj;
+    return rest;
+  });
+
+  const filteredEvidence = filteredSelectedOptions.filter(
+    (obj) => obj.id !== "" && obj.choice_id !== ""
+  );
+
+  const updatedRequestValue = {
+    ...requestValue,
+    evidence: filteredEvidence,
+  };
+
+  try {
+    const response = await axios.post(
+      infermedicaSuggestEndpoint,
+      JSON.stringify(updatedRequestValue),
+      {
+        headers: {
+          "App-Id": process.env.INFERMEDICA_APP_ID,
+          "App-Key": process.env.INFERMEDICA_APP_KEY,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 });
 
 export default infermedicaRouter;
