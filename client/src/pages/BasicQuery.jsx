@@ -60,7 +60,7 @@ export default function BasicQuery() {
         })
         .catch((e) => {
           setAnswer({
-            content: "There is some error";
+            content: "There is some error"
           })
           // console.log(e);
         });
