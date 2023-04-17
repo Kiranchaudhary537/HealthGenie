@@ -3,9 +3,7 @@ import bodyParser from "body-parser";
 import { askToOpenAi } from "./utils/openai.js";
 import imageDetection from "./utils/imageDetection.js";
 import { checkSymptoms } from "./controller/checkSymptoms.js";
-import diagnosis from "./utils/diagnosis.js";
 import cors from "cors";
-import suggest from "./utils/suggest.js";
 import passport from "passport";
 import dotenv from "dotenv";
 import authRouter from "./router/authRoute.js";
@@ -17,12 +15,12 @@ dotenv.config();
 import jwt from "jsonwebtoken";
 import "./config/passport.js";
 import db from "./config/db.js";
-import { infermedicaApiMiddleware } from "./api/InfermedicaApi.js";
-import infermedicaRouter from "./router/infermedicaRouter.js";
+
+// import infermedicaRouter from "./router/infermedicaRouter.js";
 db();
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT;
 
 app.use(
   session({
@@ -34,7 +32,7 @@ app.use(
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin:  process.env.CLIENT_URL,
     credentials: true,
   })
 );
@@ -46,9 +44,9 @@ app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
 
+// verifing jwt token
 const authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
-
   if (authHeader) {
     const token = authHeader.split(" ")[1];
     console.log(token);
@@ -64,16 +62,21 @@ const authenticateJWT = (req, res, next) => {
   }
 };
 
-app.get("/", (req, res) => {});
+
+app.get("/", (req, res) => {
+  res.json("server working");
+});
+
 app.use("/auth", authRouter);
 app.get("/checkLogin", authenticateJWT, (req, res) => {
   res.json({ loggedIn: true });
 });
 
-app.post("/basicquery", askToOpenAi);
-app.post("/symptomchecker", checkSymptoms);
-app.post("/imagedetection", imageDetection);
-app.use("/infermedica", infermedicaRouter);
+app.post("/basicquery",authenticateJWT, askToOpenAi);
+app.post("/symptomchecker", authenticateJWT, checkSymptoms);
+
+// app.post("/imagedetection",imageDetection);
+// app.use("/infermedica", infermedicaRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);

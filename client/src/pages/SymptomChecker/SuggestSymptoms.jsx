@@ -33,8 +33,8 @@ function SuggestSymptoms() {
   const infermedicaEndpoint = "https://api.infermedica.com/v3";
   const infermedicaAppId = "1ce0a89b";
   const infermedicaAppKey = "b1c514e06870174c15fe79dbc20c67cf";
-  // const infermedicaSuggestEndpoint = `${infermedicaEndpoint}/suggest`;
-  const infermedicaDiagnosisAPIEndpoint = `${infermedicaEndpoint}/diagnosis`;
+  const infermedicaSuggestEndpoint = `${infermedicaEndpoint}/suggest`;
+  
   const filteredSelectedOptions = requestValue.evidence.map((obj) => {
     const { name, ...rest } = obj;
     return rest;
@@ -47,37 +47,21 @@ function SuggestSymptoms() {
   const updatedRequestValue = { ...requestValue, evidence: filteredEvidence };
 
   useEffect(() => {
-    let timeoutId = null;
-
-    const delayedFetchQuestion = () => {
-      timeoutId = setTimeout(() => {
-        axios
-          .post(
-            infermedicaSuggestEndpoint,
-            JSON.stringify(updatedRequestValue),
-            {
-              headers: {
-                "App-Id": infermedicaAppId,
-                "App-Key": infermedicaAppKey,
-                "Content-Type": "application/json",
-              },
-            }
-          )
-          .then((response) => {
-            setOptions(response.data);
-          })
-          .catch((error) => {
-            console.error(error);
-            setOptions([]);
-          });
-      }, 1000);
-    };
-
-    delayedFetchQuestion();
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    axios
+      .post(infermedicaSuggestEndpoint, JSON.stringify(updatedRequestValue), {
+        headers: {
+          "App-Id": infermedicaAppId,
+          "App-Key": infermedicaAppKey,
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        setOptions(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+        setOptions([]);
+      });
   }, []);
 
   useEffect(() => {

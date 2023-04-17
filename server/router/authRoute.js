@@ -9,7 +9,9 @@ const authRouter = express.Router();
 authRouter.get("/login/success", (req, res) => {
   console.log(req.user);
   if (req.user) {
-    const accessToken = jwt.sign({ user: req.user }, process.env.JWT_SECRET);
+    const accessToken = jwt.sign({ user: req.user }, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
     console.log(accessToken + "   ");
     res.status(200).json({
       user: req.user,
