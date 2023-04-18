@@ -8,7 +8,7 @@ import MentalHealth from "./pages/MentalHealth";
 import DiseaseRecognition from "./pages/DiseaseRecognition";
 import { MentalHealthFormProvider } from "./context/MentalHealthFormContext";
 import { SymptomCheckerProvider } from "./context/SymtomCheckerContext";
-import { Login } from "./Auth.jsx/Auth";
+import { Login } from "./Auth/Auth";
 import PrivateRoute from "./PrivateRoutes";
 
 function App() {
