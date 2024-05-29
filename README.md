@@ -1,2 +1,2 @@
 # HealthGenie
-Hackathon project for geekforgeeks
+Hackathon project for geekforgeeks.
